@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import {getAuth} from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -11,6 +12,7 @@ const firebaseConfig = {
     appId: process.env.REACT_APP_APP_ID
 };
   // Initialize Firebase
-const firebase = initializeApp(firebaseConfig);
+const fbase = initializeApp(firebaseConfig);
+export const authService = getAuth();
 
-export default firebase
+export default fbase
