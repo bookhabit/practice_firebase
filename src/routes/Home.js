@@ -1,26 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { addDoc,collection, getDocs, query } from 'firebase/firestore';
+import { addDoc,collection, getDocs, onSnapshot, query } from 'firebase/firestore';
 import { dbService } from 'fBase';
 
 const Home = ({userObj}) => {
     const [nweetInput,setNweetInput] = useState("");
     const [nweetList,setNweetList] = useState([])
 
-    // db에서 nweets리스트 가져오는 함수
-    const getNweetList = async () => {
-        const nweetsCollectionRef = query(collection(dbService, "nweets"));
-        const querySnapshot = await getDocs(nweetsCollectionRef);
-        querySnapshot.forEach((document) => {
-            const nweetObj = {
-                ...document.data(),
-                id: document.id,
-            }
-                setNweetList(prev => [nweetObj, ...prev]);
-        });
-    };
-
     useEffect(() => {
-        getNweetList();
+        // query를 통해서 db에 접근
+        const nweetsCollectionRef = query(collection(dbService, "nweets"));
+        // db에서 nweets리스트 가져오는 함수
+        onSnapshot(nweetsCollectionRef,(snapshot)=>{
+            const nweetArr = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+                }));
+            setNweetList(nweetArr);
+        })
     }, []);
 
     const onSubmit = async (event)=>{
