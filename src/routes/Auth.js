@@ -1,4 +1,5 @@
-import { getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
+import { authService } from "fBase";
+import { getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import React, { useState } from "react";
 
 const Auth = ()=>{
@@ -44,8 +45,17 @@ const Auth = ()=>{
         setNewAccount(prev=> !prev);
         setError("")
     }
-    const onSocialClick = (event)=>{
-        console.log(event.target.name)
+    const onSocialClick = async (event)=>{
+        const {target:{name}} = event;
+        let provider;
+        if(name==="google"){
+            provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(authService,provider)
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            console.log('token',token)
+        }
+
     }
     return(
         <>
