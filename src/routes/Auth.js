@@ -11,9 +11,9 @@ const Auth = ()=>{
 
     const onChange = (event)=>{
         const {target:{name,value}} = event;
-        if(name=="email"){
+        if(name==="email"){
             setEmail(value)
-        }else if(name=="password"){
+        }else if(name==="password"){
             setPassword(value)
         }
     }
@@ -30,13 +30,13 @@ const Auth = ()=>{
             }
             console.log('data',data)
         }catch(error){
-            if(error.message=="Firebase: Error (auth/email-already-in-use)."){
+            if(error.message==="Firebase: Error (auth/email-already-in-use)."){
                 setError("이미 존재하는 이메일입니다.")
-            }else if(error.message=="Firebase: Error (auth/operation-not-allowed)."){
+            }else if(error.message==="Firebase: Error (auth/operation-not-allowed)."){
                 setError("허용되지 않은 이메일입니다.")
-            }else if(error.message=="Firebase: Error (auth/invalid-email)."){
+            }else if(error.message==="Firebase: Error (auth/invalid-email)."){
                 setError("유효하지 않은 이메일입니다.")
-            }else if(error.message=="Firebase: Error (auth/weak-password)."){
+            }else if(error.message==="Firebase: Error (auth/weak-password)."){
                 setError("비밀번호가 너무 위험합니다.")
             }
         }
@@ -55,7 +55,6 @@ const Auth = ()=>{
             const token = credential.accessToken;
             console.log('token',token)
         }
-
     }
     return(
         <>
