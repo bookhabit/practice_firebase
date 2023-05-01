@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { addDoc,collection, getDocs, query } from 'firebase/firestore';
 import { dbService } from 'fBase';
 
-const Home = () => {
+const Home = ({userObj}) => {
     const [nweetInput,setNweetInput] = useState("");
     const [nweetList,setNweetList] = useState([])
 
@@ -13,7 +13,8 @@ const Home = () => {
         querySnapshot.forEach((document) => {
             const nweetObj = {
                 ...document.data(),
-                id: document.id,}
+                id: document.id,
+            }
                 setNweetList(prev => [nweetObj, ...prev]);
         });
     };
@@ -29,7 +30,8 @@ const Home = () => {
             const nweetsCollectionRef = collection(dbService,"nweets")
             const docRef = await addDoc(nweetsCollectionRef,{
                 nweet:nweetInput,
-                createdAt:Date.now()
+                createdAt:Date.now(),
+                creatorId:userObj.uid,
             })
         }catch(error){
             console.log(error)
