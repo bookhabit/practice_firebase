@@ -51,6 +51,7 @@ const Home = ({userObj}) => {
         }
         setNweetInput("")
         setThumnail('')
+        alert('트윗이 생성되었습니다')
     }
     const onChangeNweet=(event)=>{
         const {target:{value}} = event;
@@ -67,7 +68,7 @@ const Home = ({userObj}) => {
             reader.readAsDataURL(imgFile)
         }
     }
-    // 선택한 파일 삭제
+    // 선택한 미리보기파일 삭제
     const onClearThumnail = ()=> setThumnail('')
 
     return (

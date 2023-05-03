@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { updateDoc,deleteDoc,doc } from 'firebase/firestore';
 import { dbService } from 'fBase';
+import { getStorage, ref, deleteObject } from "firebase/storage";
 
 const Nweet = ({nweetObj,isOwner}) => {
     const [editing,setEditing] = useState(false)
     const [newNweet,setNewNweet] = useState(nweetObj.nweet)
     // db식별키
     const NweetTextRef =doc(dbService, "nweets", `${nweetObj.id}`);
-    
+    const storage = getStorage();
+
     // 삭제
     const onDeleteClick = async ()=>{
         const ok = window.confirm("정말로 이 트윗을 삭제하시겠습니까?")
         if(ok){
-            // 삭제하기 - deleteDoc
+            // 게시글 삭제하기 - deleteDoc
             try {
-                const res = await deleteDoc(NweetTextRef);
-                console.log(res); // res는 undefined
+                // 파일이미지 삭제하기
+                const desertRef = ref(storage,nweetObj.image);
+                const imgRes = await deleteObject(desertRef)
+                // 게시글 삭제하기
+                const TweetRes = await deleteDoc(NweetTextRef);
+                console.log('imgRes',imgRes , '이미지파일삭제 성공')
+                console.log('TweetRes',TweetRes,'트윗게시글삭제 성공'); // res는 undefined
               } catch (e) {
                 console.log(e);
             }
