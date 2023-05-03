@@ -48,7 +48,8 @@ const Nweet = ({nweetObj,isOwner}) => {
                 </>    
                 :
                 <>
-                <h4>{nweetObj.nweet}</h4>
+                <h4>트윗 : {nweetObj.nweet}</h4>
+                {nweetObj.image && <img src={nweetObj.image}width='50px' height='50px'  alt='이미지'/>}
                 {isOwner&& 
                 <>
                     <button onClick={onDeleteClick}>트윗 삭제</button>
