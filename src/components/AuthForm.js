@@ -1,9 +1,7 @@
-import AuthForm from "components/AuthForm";
-import { authService } from "fBase";
-import { getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import React, { useState } from "react";
+import React,{useState} from 'react';
+import { getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
 
-const Auth = ()=>{
+const AuthForm = () => {
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
     const [newAccount,setNewAccount] = useState(true)
@@ -46,25 +44,19 @@ const Auth = ()=>{
         setNewAccount(prev=> !prev);
         setError("")
     }
-    const onSocialClick = async (event)=>{
-        const {target:{name}} = event;
-        let provider;
-        if(name==="google"){
-            provider = new GoogleAuthProvider();
-            const result = await signInWithPopup(authService,provider)
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential.accessToken;
-            console.log('token',token)
-        }
-    }
-    return(
+    return (
         <>
-            <AuthForm/>
-            <div>
-                <button name="google" onClick={onSocialClick}>Continue with Google</button>
-            </div>
+            <form onSubmit={onSubmit}>
+                <input type="text" name="email" placeholder="Email" required value={email} onChange={onChange}/>
+                <input type="password" name="password" placeholder="password" required value={password} onChange={onChange} />
+                <input type="submit" value={newAccount ? "Create Account" :"Log in"}/>
+                {error}
+            </form>
+            <button onClick={toggleAccount}>
+                {newAccount?"Log in":"Sign in"}
+            </button>
         </>
-    )
-}
+    );
+};
 
-export default Auth;
+export default AuthForm;

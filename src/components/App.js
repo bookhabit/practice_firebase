@@ -22,7 +22,8 @@ const App = () => {
           updateProfile:(args)=> user.updateProfile(args)
         })
       }else{
-        setIsLoggedIn(false)
+        setIsLoggedIn(false);
+        setUserObj(null);
       }
       setInit(true)
     })
