@@ -6,6 +6,7 @@ import Nweet from 'components/Nweet';
 const Home = ({userObj}) => {
     const [nweetInput,setNweetInput] = useState("");
     const [nweetList,setNweetList] = useState([])
+    const [thumnail,setThumnail] = useState()
 
     useEffect(() => {
         // query를 통해서 db에 접근
@@ -39,12 +40,30 @@ const Home = ({userObj}) => {
         const {target:{value}} = event;
         setNweetInput(value)
     }
-    console.log(nweetList)
+    // 파일 onChange
+    const onFileChange = (event)=>{
+        const imgFile = event.target.files[0]
+        const reader = new FileReader();
+        reader.onloadend = (finishedEvent)=>{
+            setThumnail(finishedEvent.currentTarget.result)
+        }
+        reader.readAsDataURL(imgFile)
+    }
+    // 선택한 파일 삭제
+    const onClearThumnail = ()=> setThumnail(null)
+
     return (
         <div>
             <form onSubmit={onSubmit}>
                 <input type='text' placeholder="What's on your mind?" maxLength={120} value={nweetInput} onChange={onChangeNweet}/>
+                <input type='file' accept='image/*' onChange={onFileChange} />
                 <input type='submit' value="Nweet"/>
+                {thumnail && (
+                    <div>
+                        <img src={thumnail} width="50px" height="50px"/>
+                        <button onClick={onClearThumnail}>Clear</button>
+                    </div>
+                )}
             </form>
             <div>
                 {nweetList && nweetList.map((nweet)=>(
