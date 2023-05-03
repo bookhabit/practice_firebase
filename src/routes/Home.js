@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { addDoc,collection, getDocs, onSnapshot, query } from 'firebase/firestore';
 import { dbService } from 'fBase';
+import Nweet from 'components/Nweet';
 
 const Home = ({userObj}) => {
     const [nweetInput,setNweetInput] = useState("");
@@ -47,9 +48,7 @@ const Home = ({userObj}) => {
             </form>
             <div>
                 {nweetList && nweetList.map((nweet)=>(
-                <div key={nweet.id}>
-                    <h4>{nweet.nweet}</h4>
-                </div>
+                    <Nweet key={nweet.id} nweetObj={nweet} isOwner={nweet.creatorId===userObj.uid} />
                 ))}
             </div>
         </div>
