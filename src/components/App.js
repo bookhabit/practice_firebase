@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import AppRouter from './Router';
 import { useState } from 'react';
 import {authService} from '../fBase';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, updateCurrentUser } from 'firebase/auth';
+import { updateProfile } from 'firebase/auth';
 
 
 const App = () => {
@@ -15,16 +16,27 @@ const App = () => {
     onAuthStateChanged(auth,(user)=>{
       if(user){
         setIsLoggedIn(true)
-        setUserObj(user)
+        setUserObj({
+          displayName:user.displayName,
+          uid:user.uid,
+          updateProfile:(args)=> user.updateProfile(args)
+        })
       }else{
         setIsLoggedIn(false)
       }
       setInit(true)
     })
   },[])
+
+  // 유저정보 업데이트
+  const refreshUser = async () => {
+    await updateCurrentUser(authService, authService.currentUser);
+    setUserObj(authService.currentUser);
+  };
+
   return (
     <>
-      {init?<AppRouter isLoggedIn={isLoggedIn} userObj={userObj}/>:"Initialzing..." }
+      {init?<AppRouter refreshUser={refreshUser} isLoggedIn={isLoggedIn} userObj={userObj}/>:"Initialzing..." }
       <footer>&copy;Nwitter {new Date().getFullYear()}</footer>
     </>
   );
